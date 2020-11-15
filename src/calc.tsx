@@ -28,6 +28,16 @@ export default function Calculator(): JSX.Element {
       return "";
     }
   };
+  const calculateCustomsDuty = (): string => {
+    if (Insurance && CustomsValueOfGoods && Freight && CustomsDuty) {
+      return ` £${
+        (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
+        (CustomsDuty / 100)
+      }`;
+    } else {
+      return "CIF x (CustomsDuty / 100)";
+    }
+  };
   const showCustomsValueOfGoods = (): string => {
     if (CustomsValueOfGoods) {
       return ` £${CustomsValueOfGoods}`;
@@ -82,7 +92,7 @@ export default function Calculator(): JSX.Element {
           name="Freight"
           ref={register({ required: true, max: 9999999, min: 0, maxLength: 8 })}
         />
-        <label htmlFor="customsDuty">Customs Duty</label>
+        <label htmlFor="customsDuty">Customs Duty (%)</label>
         <input
           type="number"
           id="customsDuty"
@@ -104,8 +114,8 @@ export default function Calculator(): JSX.Element {
             Cost, Insurance and Freight (CIF) price = <b>{calculateCIF()}</b>
             {showCustomsValueOfGoods()} + {showInsurance()} + {showFreight()}
           </div>
-          <div className="result">Customs Duty = {"135"}</div>
-          <div className="result">VAT = {"135"}</div>
+          <div className="result">Customs Duty = {calculateCustomsDuty()}</div>
+          <div className="result">VAT = {""}</div>
           <div className="result">Total Cost = {"135"}</div>
         </div>
       </form>
