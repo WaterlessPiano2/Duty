@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   padding: 10px;
+  max-width: 500px;
 }
 .App-title {
   font-size: calc(10px + 2vmin);
@@ -15,7 +16,6 @@ body {
 }
 
 form {
-  max-width: 500px;
   margin: 0 auto;
 }
 
