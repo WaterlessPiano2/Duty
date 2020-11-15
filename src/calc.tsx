@@ -68,7 +68,55 @@ export default function Calculator(): JSX.Element {
         Number(VATValueAdjustment)
       }`;
     } else {
-      return "CIF + Customs Duty to Pay + VAT Value Adjustment";
+      return "CIF + Customs Duty to Pay + VVA";
+    }
+  };
+  const calculateVAT = (): string => {
+    if (
+      Insurance &&
+      CustomsValueOfGoods &&
+      Freight &&
+      CustomsDuty &&
+      VATValueAdjustment
+    ) {
+      return ` £${
+        (Number(Insurance) +
+          Number(CustomsValueOfGoods) +
+          Number(Freight) +
+          (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
+            (CustomsDuty / 100) +
+          Number(VATValueAdjustment)) *
+        0.2
+      }`;
+    } else {
+      return "(CIF + Customs Duty to Pay + VVA) x 0.2";
+    }
+  };
+  const calculateTotalCost = (): string => {
+    if (
+      Insurance &&
+      CustomsValueOfGoods &&
+      Freight &&
+      CustomsDuty &&
+      VATValueAdjustment
+    ) {
+      return ` £${
+        (Number(Insurance) +
+          Number(CustomsValueOfGoods) +
+          Number(Freight) +
+          (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
+            (CustomsDuty / 100) +
+          Number(VATValueAdjustment)) *
+          0.2 +
+        (Number(Insurance) +
+          Number(CustomsValueOfGoods) +
+          Number(Freight) +
+          (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
+            (CustomsDuty / 100) +
+          Number(VATValueAdjustment))
+      }`;
+    } else {
+      return "CIF + Customs Duty + VVA + VAT ";
     }
   };
   const showCustomsValueOfGoods = (): string => {
@@ -133,7 +181,7 @@ export default function Calculator(): JSX.Element {
           name="CustomsDuty"
           ref={register({ required: true, max: 9999999, min: 0, maxLength: 8 })}
         />
-        <label htmlFor="VATValueAdjustment">VAT Value Adjustment</label>
+        <label htmlFor="VATValueAdjustment">VAT Value Adjustment (VVA)</label>
         <input
           type="number"
           id="VATValueAdjustment"
@@ -156,6 +204,8 @@ export default function Calculator(): JSX.Element {
           <div className="result">
             Total VAT Value = {calculateTotalVATValue()}
           </div>
+          <div className="result">VAT @ 20% = {calculateVAT()}</div>
+          <div className="result">Total Cost = {calculateTotalCost()}</div>
         </div>
       </form>
     </>
