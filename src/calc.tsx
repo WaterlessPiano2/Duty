@@ -35,7 +35,40 @@ export default function Calculator(): JSX.Element {
         (CustomsDuty / 100)
       }`;
     } else {
-      return "CIF x (CustomsDuty / 100)";
+      return "CIF x (Customs Duty Percentage / 100)";
+    }
+  };
+  const calculateVATChargedOn = (): string => {
+    if (Insurance && CustomsValueOfGoods && Freight && CustomsDuty) {
+      return ` £${
+        Number(Insurance) +
+        Number(CustomsValueOfGoods) +
+        Number(Freight) +
+        (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
+          (CustomsDuty / 100)
+      }`;
+    } else {
+      return "CIF + Customs Duty to Pay";
+    }
+  };
+  const calculateTotalVATValue = (): string => {
+    if (
+      Insurance &&
+      CustomsValueOfGoods &&
+      Freight &&
+      CustomsDuty &&
+      VATValueAdjustment
+    ) {
+      return ` £${
+        Number(Insurance) +
+        Number(CustomsValueOfGoods) +
+        Number(Freight) +
+        (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
+          (CustomsDuty / 100) +
+        Number(VATValueAdjustment)
+      }`;
+    } else {
+      return "CIF + Customs Duty to Pay + VAT Value Adjustment";
     }
   };
   const showCustomsValueOfGoods = (): string => {
@@ -114,9 +147,15 @@ export default function Calculator(): JSX.Element {
             Cost, Insurance and Freight (CIF) price = <b>{calculateCIF()}</b>
             {showCustomsValueOfGoods()} + {showInsurance()} + {showFreight()}
           </div>
-          <div className="result">Customs Duty = {calculateCustomsDuty()}</div>
-          <div className="result">VAT = {""}</div>
-          <div className="result">Total Cost = {"135"}</div>
+          <div className="result">
+            Customs Duty to Pay = {calculateCustomsDuty()}
+          </div>
+          <div className="result">
+            VAT is charged on = {calculateVATChargedOn()}
+          </div>
+          <div className="result">
+            Total VAT Value = {calculateTotalVATValue()}
+          </div>
         </div>
       </form>
     </>
