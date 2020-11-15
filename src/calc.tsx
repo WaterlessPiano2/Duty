@@ -19,6 +19,36 @@ export default function Calculator(): JSX.Element {
   const Freight: number = watch("Freight");
   const CustomsDuty: number = watch("CustomsDuty");
   const VATValueAdjustment: number = watch("VATValueAdjustment");
+  const calculateCIF = (): string => {
+    if (Insurance && CustomsValueOfGoods && Freight) {
+      return ` £${
+        Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)
+      } = `;
+    } else {
+      return "";
+    }
+  };
+  const showCustomsValueOfGoods = (): string => {
+    if (CustomsValueOfGoods) {
+      return ` £${CustomsValueOfGoods}`;
+    } else {
+      return "Customs Value of Goods";
+    }
+  };
+  const showInsurance = (): string => {
+    if (Insurance) {
+      return ` £${Insurance}`;
+    } else {
+      return "Insurance";
+    }
+  };
+  const showFreight = (): string => {
+    if (Freight) {
+      return ` £${Freight}`;
+    } else {
+      return "Freight";
+    }
+  };
 
   if (errors) {
     console.log("errors");
@@ -71,19 +101,8 @@ export default function Calculator(): JSX.Element {
 
         <div className="results">
           <div className="result">
-            Cost, Insurance and Freight (CIF) price ={" "}
-            {Insurance && CustomsValueOfGoods && Freight
-              ? ` £${
-                  Number(Insurance) +
-                  Number(CustomsValueOfGoods) +
-                  Number(Freight)
-                } = `
-              : ""}
-            {CustomsValueOfGoods
-              ? `£${CustomsValueOfGoods}`
-              : "Customs Value of Goods"}{" "}
-            + {Insurance ? `£${Insurance}` : "Insurance"} +{" "}
-            {Freight ? `£${Freight}` : "Freight"}
+            Cost, Insurance and Freight (CIF) price = <b>{calculateCIF()}</b>
+            {showCustomsValueOfGoods()} + {showInsurance()} + {showFreight()}
           </div>
           <div className="result">Customs Duty = {"135"}</div>
           <div className="result">VAT = {"135"}</div>
