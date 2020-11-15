@@ -1,24 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Calculator from "./calc";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h3 className="App-title">Duty Calculator</h3>
+      <p>
+        NOTE: This is still work in progress, there may be errors! All
+        information on this site are to be used as a guidelines only. I accept
+        no liability for any damages resulting from the usage of this
+        calculator.
+      </p>
+      <Calculator />
     </div>
   );
 }
