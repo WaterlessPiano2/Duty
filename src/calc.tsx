@@ -10,43 +10,40 @@ interface IFormInput {
 }
 
 export default function Calculator(): JSX.Element {
-  const { register, watch, errors } = useForm<IFormInput>({
+  const { register, watch } = useForm<IFormInput>({
     mode: "onChange",
   });
 
-  const CustomsValueOfGoods: number = watch("CustomsValueOfGoods");
-  const Insurance: number = watch("Insurance");
-  const Freight: number = watch("Freight");
-  const CustomsDuty: number = watch("CustomsDuty");
-  const VATValueAdjustment: number = watch("VATValueAdjustment");
+  //Watchers
+  const CustomsValueOfGoods: number = watch("CustomsValueOfGoods"),
+    Insurance: number = watch("Insurance"),
+    Freight: number = watch("Freight"),
+    CustomsDuty: number = watch("CustomsDuty"),
+    VATValueAdjustment: number = watch("VATValueAdjustment"),
+    // Common calculations
+    CIFValue: number =
+      Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight),
+    CustomsDutyValue: number = CIFValue * (CustomsDuty / 100),
+    VVAValue = Number(VATValueAdjustment),
+    VATValue: number = (CIFValue + CustomsDutyValue + VVAValue) * 0.2;
+
   const calculateCIF = (): string => {
     if (Insurance && CustomsValueOfGoods && Freight) {
-      return ` £${
-        Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)
-      } = `;
+      return ` £${CIFValue} = `;
     } else {
       return "";
     }
   };
   const calculateCustomsDuty = (): string => {
     if (Insurance && CustomsValueOfGoods && Freight && CustomsDuty) {
-      return ` £${
-        (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
-        (CustomsDuty / 100)
-      }`;
+      return ` £${CustomsDutyValue}`;
     } else {
       return "CIF x (Customs Duty Percentage / 100)";
     }
   };
   const calculateVATChargedOn = (): string => {
     if (Insurance && CustomsValueOfGoods && Freight && CustomsDuty) {
-      return ` £${
-        Number(Insurance) +
-        Number(CustomsValueOfGoods) +
-        Number(Freight) +
-        (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
-          (CustomsDuty / 100)
-      }`;
+      return ` £${CIFValue + CustomsDutyValue}`;
     } else {
       return "CIF + Customs Duty to Pay";
     }
@@ -59,16 +56,9 @@ export default function Calculator(): JSX.Element {
       CustomsDuty &&
       VATValueAdjustment
     ) {
-      return ` £${
-        Number(Insurance) +
-        Number(CustomsValueOfGoods) +
-        Number(Freight) +
-        (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
-          (CustomsDuty / 100) +
-        Number(VATValueAdjustment)
-      }`;
+      return ` £${CIFValue + CustomsDutyValue + VVAValue}`;
     } else {
-      return "CIF + Customs Duty to Pay + VVA";
+      return "VAT Charged on + VVA";
     }
   };
   const calculateVAT = (): string => {
@@ -79,17 +69,9 @@ export default function Calculator(): JSX.Element {
       CustomsDuty &&
       VATValueAdjustment
     ) {
-      return ` £${
-        (Number(Insurance) +
-          Number(CustomsValueOfGoods) +
-          Number(Freight) +
-          (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
-            (CustomsDuty / 100) +
-          Number(VATValueAdjustment)) *
-        0.2
-      }`;
+      return ` £${VATValue}`;
     } else {
-      return "(CIF + Customs Duty to Pay + VVA) x 0.2";
+      return "Total VAT Value x 0.2";
     }
   };
   const calculateTotalCost = (): string => {
@@ -100,23 +82,9 @@ export default function Calculator(): JSX.Element {
       CustomsDuty &&
       VATValueAdjustment
     ) {
-      return ` £${
-        (Number(Insurance) +
-          Number(CustomsValueOfGoods) +
-          Number(Freight) +
-          (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
-            (CustomsDuty / 100) +
-          Number(VATValueAdjustment)) *
-          0.2 +
-        (Number(Insurance) +
-          Number(CustomsValueOfGoods) +
-          Number(Freight) +
-          (Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight)) *
-            (CustomsDuty / 100) +
-          Number(VATValueAdjustment))
-      }`;
+      return ` £${CIFValue + CustomsDutyValue + VVAValue + VATValue}`;
     } else {
-      return "CIF + Customs Duty + VVA + VAT ";
+      return "Total VAT Value + VAT ";
     }
   };
   const showCustomsValueOfGoods = (): string => {
@@ -141,21 +109,21 @@ export default function Calculator(): JSX.Element {
     }
   };
 
-  if (errors) {
-    console.log("errors");
-    console.log(errors);
-  }
-
   return (
     <>
       <form aria-label="Duty Calculator" name="form">
-        <label htmlFor="customsValueOfGoods">Customs Value Of Goods</label>
+        <label htmlFor="customsValueOfGoods">Customs Value of Goods</label>
         <input
           type="number"
           id="customsValueOfGoods"
-          placeholder="Customs Value Of Goods"
+          placeholder="Customs Value of Goods"
           name="CustomsValueOfGoods"
-          ref={register({ required: true, max: 9999999, min: 0, maxLength: 8 })}
+          ref={register({
+            required: true,
+            max: 9999999,
+            min: 0,
+            maxLength: 8,
+          })}
         />
         <label htmlFor="Insurance">Insurance</label>
         <input
