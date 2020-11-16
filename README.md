@@ -1,6 +1,6 @@
 # Duty
 
-[Duty calculator ](https://calcofduty.co.uk)
+[Duty calculator ](http://calcofduty.co.uk)
 
 
 ## Todos
