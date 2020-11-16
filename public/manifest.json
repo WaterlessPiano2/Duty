@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Duty Calculator",
+  "name": "A tool to help importers calculate their duty",
   "icons": [
     {
       "src": "favicon.ico",
