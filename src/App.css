@@ -7,6 +7,9 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.link {
+  color: #61dafb;
+}
 
 body {
   background: #0e101c;
@@ -51,7 +54,7 @@ h3 {
 }
 
 p {
-  color: #bf1650;
+  color: #eed202;
 }
 
 p::before {
