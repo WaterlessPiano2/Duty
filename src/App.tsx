@@ -6,8 +6,7 @@ function App() {
   return (
     <div className="App">
       <h3 className="App-title">Duty Calculator</h3>
-
-      <div className="result">
+      <div className="top-text">
         Please let me know what you think by either filling in the{" "}
         <a
           className="link"
@@ -37,7 +36,6 @@ function App() {
         </a>
       </div>
       <Calculator />
-
       <p>
         NOTE: This is still work in progress, there may be errors! All
         information on this site are to be used as a guidelines only. I accept
