@@ -7,6 +7,9 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.link {
+  color: #61dafb;
+}
 
 body {
   background: #0e101c;
@@ -34,8 +37,11 @@ h3 {
   border-bottom: 1px solid rgb(79, 98, 148);
   border-top: 1px solid rgb(79, 98, 148);
 }
+.top-text {
+  color: white;
+}
 .results {
-  margin-top: 10px;
+  margin-top: 25px;
   text-align: left;
 }
 
@@ -51,7 +57,7 @@ h3 {
 }
 
 p {
-  color: #bf1650;
+  color: #eed202;
 }
 
 p::before {
