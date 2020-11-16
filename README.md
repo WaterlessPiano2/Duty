@@ -1,6 +1,6 @@
 # Duty
 
-Duty calculator - https://calcofduty.vercel.app/
+Duty calculator - https://calcofduty-n20eo1jj9.vercel.app/
 
 ## Todos
 
