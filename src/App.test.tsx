@@ -50,14 +50,16 @@ test("On load no output", () => {
 //   };
 // };
 
-// test("Fills the form", () => {
+// test("Fills the form", async () => {
 //   const { input1, input2, input3 } = setup();
 //   fireEvent.change(input1, { target: { value: "1" } });
 //   fireEvent.change(input2, { target: { value: "2" } });
 //   fireEvent.change(input3, { target: { value: "3" } });
 //   expect(input1.value).toBe("1");
+//   expect(input2.value).toBe("2");
+//   expect(input3.value).toBe("3");
 //   const CIF = screen.getByText(
-//     "Cost, Insurance and Freight (CIF) price = £23 + Insurance + Freight"
+//     "Cost, Insurance and Freight (CIF) price = £6 = £1 + £2 + £3"
 //   );
 //   expect(CIF).toBeInTheDocument();
 // });

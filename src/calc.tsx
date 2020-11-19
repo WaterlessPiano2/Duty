@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import NumberFormat from "react-number-format";
+
+type INumericInput = number | undefined;
 
 interface IFormInput {
-  CustomsValueOfGoods: number;
+  CustomsValueOfGoods: number | undefined;
   Insurance: number;
   Freight: number;
   CustomsDuty: number;
@@ -13,13 +16,16 @@ export default function Calculator(): JSX.Element {
   const { register, watch } = useForm<IFormInput>({
     mode: "onChange",
   });
-
-  //Watchers
-  const CustomsValueOfGoods: number = watch("CustomsValueOfGoods"),
-    Insurance: number = watch("Insurance"),
-    Freight: number = watch("Freight"),
-    CustomsDuty: number = watch("CustomsDuty"),
-    VATValueAdjustment: number = watch("VATValueAdjustment"),
+  const [CustomsValueOfGoods, setCustomsValueOfGoods] = useState<INumericInput>(
+    0
+  );
+  const [Insurance, setInsurance] = useState<INumericInput>(0);
+  const [Freight, setFreight] = useState<INumericInput>(0);
+  const [VATValueAdjustment, setVATValueAdjustment] = useState<INumericInput>(
+    0
+  );
+  //watcher
+  const CustomsDuty: number = watch("CustomsDuty"),
     // Common calculations
     CIFValue: number =
       Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight),
@@ -112,34 +118,50 @@ export default function Calculator(): JSX.Element {
   return (
     <>
       <form aria-label="Duty Calculator" name="form">
-        <label htmlFor="customsValueOfGoods">Customs Value of Goods</label>
-        <input
-          type="number"
-          id="customsValueOfGoods"
+        <label htmlFor="CustomsValueOfGoods">Customs Value of Goods</label>
+        <NumberFormat
+          id="CustomsValueOfGoods"
           placeholder="Customs Value of Goods"
           name="CustomsValueOfGoods"
-          ref={register({
-            required: true,
-            max: 9999999,
-            min: 0,
-            maxLength: 8,
-          })}
+          thousandSeparator={true}
+          decimalScale={2}
+          isNumericString
+          prefix={"£ "}
+          allowNegative={false}
+          ref={register}
+          onValueChange={(target) => {
+            setCustomsValueOfGoods(target.floatValue);
+          }}
         />
         <label htmlFor="Insurance">Insurance</label>
-        <input
-          type="number"
+        <NumberFormat
           id="Insurance"
           placeholder="Insurance"
           name="Insurance"
-          ref={register({ required: true, max: 9999999, min: 0, maxLength: 8 })}
+          thousandSeparator={true}
+          decimalScale={2}
+          isNumericString
+          prefix={"£ "}
+          allowNegative={false}
+          ref={register}
+          onValueChange={(target) => {
+            setInsurance(target.floatValue);
+          }}
         />
         <label htmlFor="Freight">Freight</label>
-        <input
-          type="number"
+        <NumberFormat
           id="Freight"
           placeholder="Freight"
           name="Freight"
-          ref={register({ required: true, max: 9999999, min: 0, maxLength: 8 })}
+          thousandSeparator={true}
+          decimalScale={2}
+          isNumericString
+          prefix={"£ "}
+          allowNegative={false}
+          ref={register}
+          onValueChange={(target) => {
+            setFreight(target.floatValue);
+          }}
         />
         <label htmlFor="customsDuty">Customs Duty (%)</label>
         <input
@@ -147,15 +169,22 @@ export default function Calculator(): JSX.Element {
           id="customsDuty"
           placeholder="Customs Duty"
           name="CustomsDuty"
-          ref={register({ required: true, max: 9999999, min: 0, maxLength: 8 })}
+          ref={register({ required: false, max: 100, min: 0, maxLength: 3 })}
         />
         <label htmlFor="VATValueAdjustment">VAT Value Adjustment (VVA)</label>
-        <input
-          type="number"
+        <NumberFormat
           id="VATValueAdjustment"
           placeholder="VAT Value Adjustment"
           name="VATValueAdjustment"
-          ref={register({ required: true, max: 500, min: 0, maxLength: 3 })}
+          thousandSeparator={true}
+          decimalScale={2}
+          isNumericString
+          prefix={"£ "}
+          allowNegative={false}
+          ref={register}
+          onValueChange={(target) => {
+            setVATValueAdjustment(target.floatValue);
+          }}
         />
 
         <div className="results">
