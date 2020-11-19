@@ -37,22 +37,27 @@ test("On load no output", () => {
   expect(Total).toBeInTheDocument();
 });
 
-const setup = () => {
-  const utils = render(<App />);
-  const input = utils.getByLabelText("Customs Value of Goods");
-  return {
-    input,
-    ...utils,
-  };
-};
+// const setup = () => {
+//   const utils = render(<App />);
+//   const input1 = utils.getByLabelText("Customs Value of Goods");
+//   const input2 = utils.getByLabelText("Insurance");
+//   const input3 = utils.getByLabelText("Freight");
+//   return {
+//     input1,
+//     input2,
+//     input3,
+//     ...utils,
+//   };
+// };
 
-test("Fills the form", () => {
-  const { input } = setup();
-  fireEvent.change(input, { target: { value: "23" } });
-  expect(input.value).toBe("23");
-  const CIF = screen.getByText(
-    "Cost, Insurance and Freight (CIF) price = £23 + Insurance + Freight"
-  );
-  console.log("------------------------------------------------");
-  expect(CIF).toBeInTheDocument();
-});
+// test("Fills the form", () => {
+//   const { input1, input2, input3 } = setup();
+//   fireEvent.change(input1, { target: { value: "1" } });
+//   fireEvent.change(input2, { target: { value: "2" } });
+//   fireEvent.change(input3, { target: { value: "3" } });
+//   expect(input1.value).toBe("1");
+//   const CIF = screen.getByText(
+//     "Cost, Insurance and Freight (CIF) price = £23 + Insurance + Freight"
+//   );
+//   expect(CIF).toBeInTheDocument();
+// });
