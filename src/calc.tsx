@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
+import roundTo from "round-to";
 
 type INumericInput = number | undefined;
 
@@ -29,9 +30,12 @@ export default function Calculator(): JSX.Element {
     // Common calculations
     CIFValue: number =
       Number(Insurance) + Number(CustomsValueOfGoods) + Number(Freight),
-    CustomsDutyValue: number = CIFValue * (CustomsDuty / 100),
+    CustomsDutyValue: number = roundTo(CIFValue * (CustomsDuty / 100), 2),
     VVAValue = Number(VATValueAdjustment),
-    VATValue: number = (CIFValue + CustomsDutyValue + VVAValue) * 0.2;
+    VATValue: number = roundTo(
+      (CIFValue + CustomsDutyValue + VVAValue) * 0.2,
+      2
+    );
 
   const calculateCIF = (): string => {
     if (Insurance && CustomsValueOfGoods && Freight) {
@@ -162,9 +166,9 @@ export default function Calculator(): JSX.Element {
   };
   const showTotalVATvalue = (): string => {
     if (VVAValue && CIFValue && CustomsDutyValue) {
-      return ` ${VATValue / 0.2}`;
+      return ` ${CIFValue + CustomsDutyValue + VVAValue}`;
     } else {
-      return "TotalV VAT value";
+      return "Total VAT value";
     }
   };
   return (
