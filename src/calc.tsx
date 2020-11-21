@@ -42,16 +42,16 @@ export default function Calculator(): JSX.Element {
   };
   const calculateCustomsDuty = (): string => {
     if (Insurance && CustomsValueOfGoods && Freight && CustomsDuty) {
-      return ` £${CustomsDutyValue}`;
+      return ` £${CustomsDutyValue} = `;
     } else {
-      return "CIF x (Customs Duty Percentage / 100)";
+      return "";
     }
   };
   const calculateVATChargedOn = (): string => {
     if (Insurance && CustomsValueOfGoods && Freight && CustomsDuty) {
-      return ` £${CIFValue + CustomsDutyValue}`;
+      return ` £${CIFValue + CustomsDutyValue} =`;
     } else {
-      return "CIF + Customs Duty to Pay";
+      return "";
     }
   };
   const calculateTotalVATValue = (): string => {
@@ -62,9 +62,9 @@ export default function Calculator(): JSX.Element {
       CustomsDuty &&
       VATValueAdjustment
     ) {
-      return ` £${CIFValue + CustomsDutyValue + VVAValue}`;
+      return ` £${CIFValue + CustomsDutyValue + VVAValue} =`;
     } else {
-      return "VAT Charged on + VVA";
+      return "";
     }
   };
   const calculateVAT = (): string => {
@@ -75,12 +75,12 @@ export default function Calculator(): JSX.Element {
       CustomsDuty &&
       VATValueAdjustment
     ) {
-      return ` £${VATValue}`;
+      return ` £${VATValue} =`;
     } else {
-      return "Total VAT Value x 0.2";
+      return "";
     }
   };
-  const calculateTotalCost = (): string => {
+  const calculateTotalCost = (): JSX.Element => {
     if (
       Insurance &&
       CustomsValueOfGoods &&
@@ -88,9 +88,20 @@ export default function Calculator(): JSX.Element {
       CustomsDuty &&
       VATValueAdjustment
     ) {
-      return ` £${CIFValue + CustomsDutyValue + VVAValue + VATValue}`;
+      return (
+        <span>
+          <NumberFormat
+            value={CIFValue + CustomsDutyValue + VVAValue + VATValue}
+            displayType={"text"}
+            thousandSeparator={true}
+            prefix={"£"}
+            decimalScale={2}
+          />{" "}
+          =
+        </span>
+      );
     } else {
-      return "Total VAT Value + VAT ";
+      return <span />;
     }
   };
   const showCustomsValueOfGoods = (): string => {
@@ -114,7 +125,48 @@ export default function Calculator(): JSX.Element {
       return "Freight";
     }
   };
-
+  const showCIF = (): string => {
+    if (CIFValue) {
+      return ` £${CIFValue}`;
+    } else {
+      return "CIF";
+    }
+  };
+  const showCustomsDuty = (): string => {
+    if (CustomsDuty) {
+      return ` ${CustomsDuty}`;
+    } else {
+      return "Customs Duty";
+    }
+  };
+  const showCustomsDutyToPay = (): string => {
+    if (CustomsDutyValue) {
+      return ` ${CustomsDutyValue}`;
+    } else {
+      return "Customs Duty to pay";
+    }
+  };
+  const showVATChargedOn = (): string => {
+    if (CIFValue && CustomsDutyValue) {
+      return ` ${CIFValue + CustomsDutyValue}`;
+    } else {
+      return "VAT charged on";
+    }
+  };
+  const showVVA = (): string => {
+    if (VVAValue) {
+      return ` ${VVAValue}`;
+    } else {
+      return "VVA";
+    }
+  };
+  const showTotalVATvalue = (): string => {
+    if (VVAValue && CIFValue && CustomsDutyValue) {
+      return ` ${VATValue / 0.2}`;
+    } else {
+      return "TotalV VAT value";
+    }
+  };
   return (
     <>
       <form aria-label="Duty Calculator" name="form">
@@ -193,16 +245,25 @@ export default function Calculator(): JSX.Element {
             {showCustomsValueOfGoods()} + {showInsurance()} + {showFreight()}
           </div>
           <div className="result">
-            Customs Duty to Pay = {calculateCustomsDuty()}
+            Customs Duty to Pay = <b>{calculateCustomsDuty()}</b> {showCIF()} x
+            ({showCustomsDuty()} / 100)
           </div>
           <div className="result">
-            VAT is charged on = {calculateVATChargedOn()}
+            VAT is charged on = <b>{calculateVATChargedOn()}</b> {showCIF()} +{" "}
+            {showCustomsDutyToPay()}
           </div>
           <div className="result">
-            Total VAT Value = {calculateTotalVATValue()}
+            Total VAT Value = <b>{calculateTotalVATValue()}</b>{" "}
+            {showVATChargedOn()} + {showVVA()}
           </div>
-          <div className="result">VAT @ 20% = {calculateVAT()}</div>
-          <div className="result">Total Cost = {calculateTotalCost()}</div>
+          <div className="result">
+            VAT @ 20% = <b>{calculateVAT()} </b> {showTotalVATvalue()} x 0.2
+          </div>
+          <div className="result">
+            Total Cost = <b>{calculateTotalCost()}</b>
+            {showCIF()} + {showCustomsDutyToPay()} + {showVVA()} +{" "}
+            {showTotalVATvalue()}
+          </div>
         </div>
       </form>
     </>
