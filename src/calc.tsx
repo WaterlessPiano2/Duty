@@ -171,6 +171,13 @@ export default function Calculator(): JSX.Element {
       return "Total VAT value";
     }
   };
+  const showVAT = (): string => {
+    if (VATValue) {
+      return ` ${VATValue}`;
+    } else {
+      return "VAT";
+    }
+  };
   return (
     <>
       <form aria-label="Duty Calculator" name="form">
@@ -265,8 +272,7 @@ export default function Calculator(): JSX.Element {
           </div>
           <div className="result">
             Total Cost = <b>{calculateTotalCost()}</b>
-            {showCIF()} + {showCustomsDutyToPay()} + {showVVA()} +{" "}
-            {showTotalVATvalue()}
+            {showVAT()} + {showTotalVATvalue()}
           </div>
         </div>
       </form>
